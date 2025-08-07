@@ -20,3 +20,12 @@ python main.py de true
 - https://www.rsna.org/practice-tools/data-tools-and-standards/radlex-radiology-lexicon
 
 - the file  core-playbook-de.csv has been already downloaded
+
+- now we can extract label from core-playbook-de.csv
+
+    RADEX_LABEL=  ['MODALITY', 'PLAYBOOK_TYPE', 'POPULATION', 'BODY_REGION', 
+                'MODALITY_MODIFIER', 'PROCEDURE_MODIFIER', 'ANATOMIC_FOCUS',
+                'LATERALITY', 'REASON_FOR_EXAM', 'TECHNIQUE', 'PHARMACEUTICAL', 'VIEW',
+                'SHORT_NAME', 'LONG_NAME']
+
+- then create the NER label for our model and using the previous reports ('en') withouet translation to crate the train dataset for the model.
