@@ -1,4 +1,26 @@
-# Load the file and print lines to understand the separator
+import asyncio
+from googletrans import Translator
+from tqdm import tqdm
+
+translator = Translator()  # Reuse this
+async def __translate_text(text, dest="de"):
+    result = await translator.translate(text, dest=dest)
+    return result.text
+
+async def translate_reports(reports, dest ="de"):
+
+    tasks = [__translate_text(report.strip(), dest) for report in reports]
+
+    translated_texts = []
+    for coro in tqdm(asyncio.as_completed(tasks), total=len(tasks), desc="Translating"):
+        try:
+            translated_text = await coro
+        except Exception as e:
+            translated_text = f"[ERROR] {str(e)}"
+        translated_texts.append(translated_text)
+
+    return translated_texts
+
 def extract_reports_from_raw_file(file_path):
     reports = []
     current_report = []
@@ -23,14 +45,10 @@ def extract_reports_from_raw_file(file_path):
     # Catch any final report not ended with a quote
     if current_report:
         full_report = " ".join(current_report).strip()
-
-
-
-        reports.append( __basic_cleanup(full_report))
-
+        reports.append( full_report)
     return reports
 
-def __basic_cleanup(reports):
+def basic_cleanup(reports):
     """
     Remove '"'   present in the reposts.
     """
@@ -62,3 +80,7 @@ def save_reports_to_individual_files(reports, output_dir):
         with open(file_path, "w", encoding="utf-8") as f:
             f.write(clean)
     print(f"Saved {idx} reports {output_dir}")
+
+
+
+
