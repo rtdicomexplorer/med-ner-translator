@@ -1,2 +1,5 @@
 googletrans
 tqdm
+pandas
+nltk
+transformers

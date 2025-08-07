@@ -14,3 +14,9 @@ the input parameters are :
 - save original true / false
 python main.py de true
 
+
+
+### Second case generating patterns from latex radlex
+- https://www.rsna.org/practice-tools/data-tools-and-standards/radlex-radiology-lexicon
+
+- the file  core-playbook-de.csv has been already downloaded
