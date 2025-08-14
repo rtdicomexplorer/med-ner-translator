@@ -36,13 +36,24 @@
             </div>
 
             <div class="form-group">
-                <label for="dest_lang">Select Target Language</label>
+                 <label for="dest_lang">Select Target Language</label>
+                
                 <select id="dest_lang" name="dest_lang" required>
+                    {% for code, name in languages.items() %}
+                        <option value="{{ code }}" {% if dest_lang == code %}selected{% endif %}>{{ name }}</option>
+                    {% endfor %}
+                    </select>
+                
+                 <!--<select id="dest_lang" name="dest_lang" required>
                     <option value="en" {% if dest_lang=='en' %}selected{% endif %}>English</option>
                     <option value="fr" {% if dest_lang=='fr' %}selected{% endif %}>French</option>
                     <option value="de" {% if dest_lang=='de' %}selected{% endif %}>German</option>
-                    <!-- Add more languages here -->
-                </select>
+                    <option value="it" {% if dest_lang=='it' %}selected{% endif %}>Italian</option>
+                    <option value="es" {% if dest_lang=='es' %}selected{% endif %}>Spain</option>
+                    <option value="zh" {% if dest_lang=='zh' %}selected{% endif %}>Chinese</option>
+                    <option value="ja" {% if dest_lang=='ja' %}selected{% endif %}>Japanese</option>
+                
+                </select> -->
             </div>
         </div>
 

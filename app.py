@@ -1,22 +1,16 @@
 from flask import Flask, request, render_template, flash
-from utils import translate_text_with_detection,run_async
-from docx import Document
+from utils import translate_text_with_detection,run_async, extract_text_from_docx, extract_text_from_pdf
 from datetime import datetime
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
-import fitz  # PyMuPDF
 
-def extract_text_from_pdf(file):
-    doc = fitz.open(stream=file.read(), filetype="pdf")
-    text = ""
-    for page in doc:
-        text += page.get_text()
-    return text
+import json
+import os
 
-def extract_text_from_docx(file):
-    doc = Document(file)
-    return '\n'.join([para.text for para in doc.paragraphs])
+# Load languages from JSON once at startup
+with open(os.path.join(os.path.dirname(__file__), 'languages.json'), 'r', encoding='utf-8') as f:
+    languages = json.load(f)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -62,6 +56,7 @@ def index():
         dest_lang=dest_lang,
         detected_lang=detected_lang,
         file_name=file_name,
+        languages=languages,
         current_year=datetime.now().year  
     )
 
