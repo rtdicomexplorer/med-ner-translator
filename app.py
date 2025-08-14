@@ -5,6 +5,14 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
+import fitz  # PyMuPDF
+
+def extract_text_from_pdf(file):
+    doc = fitz.open(stream=file.read(), filetype="pdf")
+    text = ""
+    for page in doc:
+        text += page.get_text()
+    return text
 
 def extract_text_from_docx(file):
     doc = Document(file)
@@ -33,6 +41,8 @@ def index():
                 original_text = uploaded_file.read().decode('utf-8')
             elif filename.endswith('.docx'):
                 original_text = extract_text_from_docx(uploaded_file)
+            elif filename.endswith('.pdf'):
+                original_text = extract_text_from_pdf(uploaded_file)
             else:
                 flash("Unsupported file type. Please upload .txt or .docx files.")
 

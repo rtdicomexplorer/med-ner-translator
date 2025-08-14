@@ -5,3 +5,4 @@ nltk
 transformers
 Flask
 python-docx
+PyMuPDF  
