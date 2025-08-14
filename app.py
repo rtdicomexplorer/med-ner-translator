@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, flash
 from utils import translate_text_with_detection,run_async, extract_text_from_docx, extract_text_from_pdf
+from marian_transl import  translate_text_marian
 from datetime import datetime
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -43,9 +44,9 @@ def index():
         # If user clicked translate and there's text in textarea
         if action == 'translate' and original_text:
             try:
-
-                translated_text, detected_lang = run_async( translate_text_with_detection(original_text, dest=dest_lang)
-                                            )
+                detected_lang = 'en'
+                #translated_text, detected_lang = run_async( translate_text_with_detection(original_text, dest=dest_lang))
+                translated_text = run_async(translate_text_marian(original_text, detected_lang, dest_lang))
             except Exception as e:
                 translated_text = f"[ERROR] {e}"
 

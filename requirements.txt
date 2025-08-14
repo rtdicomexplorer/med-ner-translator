@@ -6,3 +6,5 @@ transformers
 Flask
 python-docx
 PyMuPDF  
+transformers sentencepiece
+torch
