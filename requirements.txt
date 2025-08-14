@@ -3,3 +3,5 @@ tqdm
 pandas
 nltk
 transformers
+Flask
+python-docx

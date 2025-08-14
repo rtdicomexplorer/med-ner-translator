@@ -7,6 +7,11 @@ async def __translate_text(text, dest="de"):
     result = await translator.translate(text, dest=dest)
     return result.text
 
+
+async def translate_text_with_detection(text, dest="de"):
+    result = await translator.translate(text, dest=dest)
+    return result.text, result.src
+
 async def translate_reports(reports, dest ="de"):
 
     tasks = [__translate_text(report.strip(), dest) for report in reports]
@@ -83,4 +88,8 @@ def save_reports_to_individual_files(reports, output_dir):
 
 
 
+def run_async(coro):
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    return loop.run_until_complete(coro)
 

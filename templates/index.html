@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>File Translator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        textarea {
+            width: 100%;
+            height: 400px;
+            font-size: 16px;
+            padding: 10px;
+            resize: vertical;
+            font-family: monospace;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>File Translator</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".txt,.docx" onchange="this.form.submit()">
+        
+        <div class="container">
+            <div class="column">
+                <label for="original_text"><strong>Original Text (editable):</strong></label>
+                <textarea id="original_text" name="original_text">{{ original }}</textarea>
+                    {% if detected_lang %}
+                    <p><em>Detected language: <strong>{{ detected_lang }}</strong></em></p>
+                            {% endif %}
+                    <label for="dest_lang"><strong>Select Target Language:</strong></label>
+                    <select id="dest_lang" name="dest_lang" required>
+                        <option value="en" {% if dest_lang == 'en' %}selected{% endif %}>English</option>
+                        <option value="fr" {% if dest_lang == 'fr' %}selected{% endif %}>French</option>
+                        <option value="de" {% if dest_lang == 'de' %}selected{% endif %}>German</option>
+                        <option value="it" {% if dest_lang == 'it' %}selected{% endif %}>Italian</option>
+                        <option value="jp" {% if dest_lang == 'jp' %}selected{% endif %}>Japan</option>
+                    </select>
+                <button type="submit" name="action" value="translate">Translate</button>
+            </div>
+
+            <div class="column">
+                <label for="translated_text"><strong>Translated Text:</strong></label>
+                <textarea id="translated_text" readonly>{{ translated }}</textarea>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
