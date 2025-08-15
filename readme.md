@@ -17,7 +17,7 @@ the input parameters are :
 
 
 
-### Second case generating patterns from Rad-lexicon
+## Second case generating patterns from Rad-lexicon
 - https://www.rsna.org/practice-tools/data-tools-and-standards/radlex-radiology-lexicon
 
 - the file  core-playbook-de.csv has been already downloaded
@@ -32,4 +32,12 @@ the input parameters are :
 - then create the NER label for our model and using the previous reports ('en') without 
 translation to create the train dataset for the model.
 
-#### take a look at radlex_bio.py
+python radlex_bio.py
+
+
+## third case:
+
+Translate text offline, googletrans works just online.  
+A small flask app.py permit to launch a web page where is possible to translate uploaded documents.
+
+python app.py 
