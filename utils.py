@@ -3,14 +3,14 @@ from googletrans import Translator
 from tqdm import tqdm
 import fitz  # PyMuPDF
 from docx import Document
-translator = Translator()  # Reuse this
+translator = Translator()
 async def __translate_text(text, dest="de"):
     result = await translator.translate(text, dest=dest)
     return result.text
 
 
-async def translate_text_with_detection(text, dest="de"):
-    result = await translator.translate(text, dest=dest)
+async def translate_text_with_detection(text, src, dest):
+    result = await translator.translate(text, dest=dest, src=src)
     return result.text, result.src
 
 async def translate_reports(reports, dest ="de"):

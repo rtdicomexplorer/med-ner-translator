@@ -23,15 +23,13 @@
          display: flex;
          align-items: center;
          gap: 50px;
-
          margin: 0 auto;
          justify-content: flex-start;
          width: 100%;
-         background-color: rgba(255, 253, 253, 0.1);
      }
 
      .navbar-logo {
-         height: 80px;
+         height: 100px;
          width: auto;
      }
 
@@ -41,15 +39,13 @@
      }
 
 
-
-     h1 {
-         text-align: center;
-         margin-bottom: 30px;
-     }
-
      form {
-         max-width: 1200px;
+
+         width: 100%;
+         /* max-width: 1200px; */
          margin: auto;
+
+         background-color: transparent;
      }
 
      .form-row {
@@ -80,6 +76,9 @@
          border: 1px solid #ccc;
      }
 
+        select{
+            max-width: 200px;
+        }
      textarea {
          height: 300px;
          font-family: monospace;
@@ -131,10 +130,11 @@
          font-weight: bold;
          font-size: 16px;
          transition: background-color 0.2s ease;
+         max-width: fit-content;
      }
 
      .custom-upload:hover {
-         background-color: #60d7db;
+         background-color: #dadedf;
      }
 
      .input-label {

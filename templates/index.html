@@ -21,41 +21,43 @@
                 <label for="file-upload" class="custom-upload">
                     📤 Choose File (.txt or .docx)
                 </label>
-                <input type="file" id="file-upload" name="file" accept=".txt,.docx,.pdf" onchange="handleFileChange(event)">
+                <input type="file" id="file-upload" name="file" accept=".txt,.docx,.pdf"
+                    onchange="handleFileChange(event)">
                 <div class="file-name-container">
                     {% if file_name %}
-                        <label for="file-name-input">Selected File</label>
-                 
-                    
-                       {% endif %}
-                       <input type="text" id="file-name-input" class="input-label" name="file_name" value="{{ file_name or 'No file selected' }}" readonly>
+                    <label for="file-name-input">Selected File</label>
+
+
+                    {% endif %}
+                    <input type="text" id="file-name-input" class="input-label" name="file_name"
+                        value="{{ file_name or 'No file selected' }}" readonly>
                 </div>
+            </div>
+
+        </div>
 
 
-
+        <div class="form-row">
+            <div class="form-group">
+                <label for="src_lang">Select Source Language</label>
+                <select id="src_lang" name="src_lang" required>
+                    {% for code, name in languages.items() %}
+                    <option value="{{ code }}" {% if src_lang==code %}selected{% endif %}>{{ name }} ({{code}})</option>
+                    {% endfor %}
+                </select>
             </div>
 
             <div class="form-group">
-                 <label for="dest_lang">Select Target Language</label>
-                
+                <label for="dest_lang">Select Target Language</label>
                 <select id="dest_lang" name="dest_lang" required>
                     {% for code, name in languages.items() %}
-                        <option value="{{ code }}" {% if dest_lang == code %}selected{% endif %}>{{ name }}</option>
+                    <option value="{{ code }}" {% if dest_lang==code %}selected{% endif %}>{{ name }}</option>
                     {% endfor %}
-                    </select>
-                
-                 <!--<select id="dest_lang" name="dest_lang" required>
-                    <option value="en" {% if dest_lang=='en' %}selected{% endif %}>English</option>
-                    <option value="fr" {% if dest_lang=='fr' %}selected{% endif %}>French</option>
-                    <option value="de" {% if dest_lang=='de' %}selected{% endif %}>German</option>
-                    <option value="it" {% if dest_lang=='it' %}selected{% endif %}>Italian</option>
-                    <option value="es" {% if dest_lang=='es' %}selected{% endif %}>Spain</option>
-                    <option value="zh" {% if dest_lang=='zh' %}selected{% endif %}>Chinese</option>
-                    <option value="ja" {% if dest_lang=='ja' %}selected{% endif %}>Japanese</option>
-                
-                </select> -->
+                </select>
             </div>
         </div>
+
+
 
         <div class="form-row">
             <div class="form-group">
@@ -65,8 +67,13 @@
             </div>
 
             <div class="form-group">
-                <label for="translated_text">Translated Text</label>
-                <textarea id="translated_text" readonly>{{ translated }}</textarea>
+                <label for="translated_google">Google Translate</label>
+                <textarea id="translated_google" readonly>{{ translated_google }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="translated_marian">MarianMT Translate</label>
+                <textarea id="translated_marian" readonly>{{ translated_marian }}</textarea>
             </div>
         </div>
 
@@ -95,12 +102,51 @@
             }
         }
 
+        const availableModels = JSON.parse('{{ available_models | safe }}');
+        const languageNames = JSON.parse('{{ language_names | safe }}');
+
+        const srcSelect = document.getElementById('src_lang');
+        const destSelect = document.getElementById('dest_lang');
+
+        // Value returned from server to restore selection
+        const previouslySelected = "{{ dest_lang or '' }}";
+
+        function updateDestLangOptions() {
+            const srcLang = srcSelect.value;
+            const validTargets = availableModels[srcLang] || [];
+
+            destSelect.innerHTML = "";
+
+            validTargets.forEach(code => {
+                const option = document.createElement("option");
+                option.value = code;
+                option.textContent = `${languageNames[code] || code} (${code})`;
+
+                // Check if this should be selected
+                if (code === previouslySelected) {
+                    option.selected = true;
+                }
+
+                destSelect.appendChild(option);
+            });
+
+            if (validTargets.length === 0) {
+                const opt = document.createElement("option");
+                opt.textContent = "No supported target languages";
+                opt.disabled = true;
+                destSelect.appendChild(opt);
+            }
+        }
+
+        srcSelect.addEventListener("change", updateDestLangOptions);
+        window.addEventListener("DOMContentLoaded", updateDestLangOptions);
+
 
     </script>
 
-<footer class="footer">
-    <p>&copy; {{ current_year }} m.bufano Universitäts Klinikum Freiburg. All rights reserved.</p>
-</footer>
+    <footer class="footer">
+        <p>&copy; {{ current_year }} m.bufano Universitäts Klinikum Freiburg. All rights reserved.</p>
+    </footer>
 
 
 </body>
